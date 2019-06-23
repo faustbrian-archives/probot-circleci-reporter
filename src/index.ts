@@ -50,9 +50,10 @@ export = async (robot: Application) => {
 					showOldLogs: config.showOldLogs,
 				};
 
-				const comment: Octokit.IssuesListCommentsResponseItem = (await context.github.issues.listComments(
-					context.repo({ issue_number: serialized.number }),
-				)).data.find(c => c.user.login === `${process.env.APP_NAME}[bot]`);
+				const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(
+					context,
+					serialized.number,
+				);
 
 				if (comment) {
 					context.log(`Updating comment ${owner}/${repo} #${serialized.number}`);
@@ -85,7 +86,7 @@ export = async (robot: Application) => {
 
 			const { number } = pullRequests.data.items.find(pullRequest => pullRequest.state === "open");
 
-			const comment = await getExistingComment(context, number);
+			const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(context, number);
 
 			if (comment && !comment.body.startsWith("<details>")) {
 				const summary = "Your tests are passing again!";
