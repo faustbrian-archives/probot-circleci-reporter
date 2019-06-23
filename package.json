@@ -61,6 +61,8 @@
 		"verbose": true
 	},
 	"dependencies": {
+		"@botamic/toolkit": "^0.1.0",
+		"@hapi/joi": "^15.1.0",
 		"got": "^9.6.0",
 		"handlebars": "^4.1.2",
 		"probot": "^9.2.15",
@@ -68,6 +70,8 @@
 		"strip-ansi": "^5.2.0"
 	},
 	"devDependencies": {
+		"@types/got": "^9.6.0",
+		"@types/hapi__joi": "^15.0.2",
 		"@types/jest": "^24.0.15",
 		"@types/nock": "^10.0.3",
 		"@types/node": "^12.0.10",

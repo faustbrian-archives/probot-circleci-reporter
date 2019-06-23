@@ -1,15 +1,10 @@
+import { getBotComment } from "@botamic/toolkit";
 import handlebars from "handlebars";
 import { Application, Context, Octokit } from "probot";
 import { CircleCI } from "./providers/circleci";
 import { newComment, updateComment } from "./services/api";
 import { loadConfig } from "./services/config";
 import { templateFailure } from "./templates";
-
-// move to toolkit
-const getPreviousComment = async (context: Context, id: number): Promise<Octokit.IssuesListCommentsResponseItem> =>
-	(await context.github.issues.listComments(context.repo({ issue_number: id }))).data.find(
-		comment => comment.user.login === `${process.env.APP_NAME}[bot]`,
-	);
 
 export = async (robot: Application) => {
 	robot.on("status", async (context: Context) => {
@@ -50,7 +45,7 @@ export = async (robot: Application) => {
 					showOldLogs: config.failure.showOldLogs,
 				};
 
-				const comment: Octokit.IssuesListCommentsResponseItem = await getPreviousComment(
+				const comment: Octokit.IssuesListCommentsResponseItem | undefined = await getBotComment(
 					context,
 					serialized.number,
 				);
@@ -86,7 +81,7 @@ export = async (robot: Application) => {
 
 			const pullRequestNumber: number = pullRequests.data.items[0].number;
 
-			const comment: Octokit.IssuesListCommentsResponseItem = await getPreviousComment(
+			const comment: Octokit.IssuesListCommentsResponseItem | undefined = await getBotComment(
 				context,
 				pullRequestNumber,
 			);
