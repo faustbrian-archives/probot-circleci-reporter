@@ -28,7 +28,7 @@ export = async (robot: Application) => {
 			const serialized = await new Serializer(context).serialize();
 
 			if (serialized) {
-				const config: Record<string, string | boolean> = await loadConfig(context);
+				const config: Record<string, any> = await loadConfig(context);
 
 				const commitData = {
 					...serialized.data,
@@ -44,10 +44,10 @@ export = async (robot: Application) => {
 					data: serialized.data,
 					sha,
 					number: serialized.number,
-					after: config.after && handlebars.compile(config.after)(commitData),
-					before: config.before && handlebars.compile(config.before)(commitData),
-					showNewLogs: config.showNewLogs,
-					showOldLogs: config.showOldLogs,
+					after: handlebars.compile(config.failure.message.after)(commitData),
+					before: handlebars.compile(config.failure.message.before)(commitData),
+					showNewLogs: config.failure.showNewLogs,
+					showOldLogs: config.failure.showOldLogs,
 				};
 
 				const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(
@@ -89,11 +89,14 @@ export = async (robot: Application) => {
 			const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(context, number);
 
 			if (comment && !comment.body.startsWith("<details>")) {
-				const summary = "Your tests are passing again!";
-				const body = `<details>\n<summary>${summary}</summary>\n\n${comment.body}\n</details>`;
+				const config: Record<string, any> = await loadConfig(context);
 
 				return context.github.issues.updateComment(
-					context.repo({ issue_number: number, body, comment_id: comment.id }),
+					context.repo({
+						issue_number: number,
+						body: `<details>\n<summary>${config.success.message.before}</summary>\n\n${comment.body}\n</details>`,
+						comment_id: comment.id,
+					}),
 				);
 			}
 		}
