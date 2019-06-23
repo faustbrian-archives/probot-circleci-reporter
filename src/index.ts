@@ -1,12 +1,18 @@
 import handlebars from "handlebars";
-import { Application, Octokit } from "probot";
+import { Application, Context, Octokit } from "probot";
 import { Serializer } from "./serializer";
 import { newComment, updateComment } from "./services/api";
 import { loadConfig } from "./services/config";
-import { templateFailure, templateSuccess } from "./templates";
+import { templateFailure } from "./templates";
+
+// move to toolkit
+const getExistingComment = async (context: Context, id: number): Promise<Octokit.IssuesListCommentsResponseItem> =>
+	(await context.github.issues.listComments(context.issue({ issue_number: id }))).data.find(
+		comment => comment.user.login === `${process.env.APP_NAME}[bot]`,
+	);
 
 export = async (robot: Application) => {
-	robot.on("status", async context => {
+	robot.on("status", async (context: Context) => {
 		const { owner, repo } = context.repo();
 
 		if (context.payload.state === "failure") {
@@ -62,7 +68,33 @@ export = async (robot: Application) => {
 				return newComment(opts);
 			}
 		} else if (context.payload.state === "success") {
-			// @TODO
+			const { context: statusContext, sha } = context.payload;
+
+			if (!statusContext.startsWith("ci/circleci")) {
+				context.log(`Context [${statusContext}] does not exist`);
+				return;
+			}
+
+			const pullRequests = await context.github.search.issuesAndPullRequests({
+				q: `${sha} is:pr repo:${owner}/${repo}`,
+			});
+
+			if (!pullRequests.data.total_count) {
+				return;
+			}
+
+			const { number } = pullRequests.data.items.find(pullRequest => pullRequest.state === "open");
+
+			const comment = await getExistingComment(context, number);
+
+			if (comment && !comment.body.startsWith("<details>")) {
+				const summary = "Your tests are passing again!";
+				const body = `<details>\n<summary>${summary}</summary>\n\n${comment.body}\n</details>`;
+
+				return context.github.issues.updateComment(
+					context.repo({ issue_number: number, body, comment_id: comment.id }),
+				);
+			}
 		}
 	});
 };

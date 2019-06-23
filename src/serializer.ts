@@ -41,11 +41,17 @@ export class Serializer {
 
 			const response = await this.sendRequest(failedAction.output_url);
 
+			const content: string = stripAnsi(this.parseLog(response[0].message));
+
+			if (content.length >= 65536) {
+				// trim the content
+			}
+
 			return {
 				number: parseInt(pullRequestUrl.substr(pullRequestUrl.lastIndexOf("/")).substr(1), 10),
 				data: {
 					command: failedStep.name,
-					content: stripAnsi(this.parseLog(response[0].message)),
+					content,
 					targetUrl,
 				},
 			};
