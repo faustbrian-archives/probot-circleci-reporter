@@ -3,7 +3,7 @@ import { Application, Octokit } from "probot";
 import { Serializer } from "./serializer";
 import { newComment, updateComment } from "./services/api";
 import { loadConfig } from "./services/config";
-import { template } from "./template";
+import { templateFailure, templateSuccess } from "./templates";
 
 export = async (robot: Application) => {
 	robot.on("status", async context => {
@@ -12,16 +12,15 @@ export = async (robot: Application) => {
 		if (context.payload.state === "failure") {
 			const { context: statusContext, sha } = context.payload;
 
-			if (!statusContext.includes("ci/circleci")) {
+			if (!statusContext.startsWith("ci/circleci")) {
 				context.log(`Context [${statusContext}] does not exist`);
 				return;
 			}
 
-			context.log(`Creating CircleCI instance for ${context.id}`);
+			context.log(`Creating instance for ${context.id}`);
 
-			const serializer: Serializer = new Serializer(context);
+			const serialized = await new Serializer(context).serialize();
 
-			const serialized = await serializer.serialize();
 			if (serialized) {
 				const config: Record<string, string | boolean> = await loadConfig(context);
 
@@ -35,7 +34,7 @@ export = async (robot: Application) => {
 
 				const opts = {
 					context,
-					template: handlebars.compile(template),
+					template: handlebars.compile(templateFailure),
 					data: serialized.data,
 					sha,
 					number: serialized.number,
@@ -56,12 +55,14 @@ export = async (robot: Application) => {
 						...opts,
 						...{ comment },
 					});
-				} else {
-					context.log(`Creating comment ${owner}/${repo} #${serialized.number}`);
-
-					return newComment(opts);
 				}
+
+				context.log(`Creating comment ${owner}/${repo} #${serialized.number}`);
+
+				return newComment(opts);
 			}
+		} else if (context.payload.state === "success") {
+			// @TODO
 		}
 	});
 };
