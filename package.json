@@ -1,0 +1,94 @@
+{
+	"name": "@botamic/circleci-reporter",
+	"version": "1.0.0",
+	"description": "A GitHub App built with Probot that reports CircleCI build failures..",
+	"keywords": [
+		"github",
+		"probot",
+		"probot-app"
+	],
+	"homepage": "https://github.com/botamic/circleci-reporter",
+	"bugs": "https://github.com/botamic/circleci-reporter/issues",
+	"repository": "https://github.com/botamic/circleci-reporter.git",
+	"license": "MPL-2.0",
+	"author": "Brian Faust <hello@basecode.sh>",
+	"scripts": {
+		"build": "yarn clean && tsc",
+		"build:watch": "yarn build -w",
+		"clean": "rimraf .coverage dist tmp",
+		"dev": "nodemon --exec \"yarn start\"",
+		"format": "yarn lint && yarn prettier",
+		"lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+		"prepublishOnly": "yarn format && yarn test && yarn build",
+		"prettier": "prettier --write \"./*.{ts,js,json,md}\" \"./**/*.{ts,js,json,md}\"",
+		"start": "probot run ./dist/index.js",
+		"test": "jest",
+		"test:watch": "jest --watchAll"
+	},
+	"jest": {
+		"bail": true,
+		"collectCoverage": true,
+		"collectCoverageFrom": [
+			"src/**/*.ts",
+			"!**/node_modules/**"
+		],
+		"coverageDirectory": "<rootDir>/.coverage",
+		"coverageReporters": [
+			"json",
+			"lcov",
+			"text",
+			"clover",
+			"html"
+		],
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		],
+		"setupFilesAfterEnv": [
+			"jest-extended"
+		],
+		"testEnvironment": "node",
+		"testMatch": [
+			"**/*.test.ts"
+		],
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"verbose": true
+	},
+	"dependencies": {
+		"got": "^9.6.0",
+		"handlebars": "^4.1.2",
+		"probot": "^9.2.15",
+		"probot-config": "^1.0.1",
+		"strip-ansi": "^5.2.0"
+	},
+	"devDependencies": {
+		"@types/jest": "^24.0.15",
+		"@types/nock": "^10.0.3",
+		"@types/node": "^12.0.10",
+		"@types/prettier": "^1.16.4",
+		"@types/rimraf": "^2.0.2",
+		"@typeskrift/tsconfig": "^0.1.2",
+		"@typeskrift/tslint": "^0.1.4",
+		"codecov": "^3.5.0",
+		"jest": "^24.8.0",
+		"jest-extended": "^0.11.1",
+		"nock": "^10.0.6",
+		"nodemon": "^1.19.1",
+		"prettier": "^1.18.2",
+		"rimraf": "^2.6.3",
+		"smee-client": "^1.1.0",
+		"ts-jest": "^24.0.2",
+		"tslint": "^5.18.0",
+		"tslint-config-prettier": "^1.18.0",
+		"typescript": "^3.5.2"
+	},
+	"engines": {
+		"node": ">= 8.3.0"
+	}
+}
