@@ -6,8 +6,8 @@ import { loadConfig } from "./services/config";
 import { templateFailure } from "./templates";
 
 // move to toolkit
-const getExistingComment = async (context: Context, id: number): Promise<Octokit.IssuesListCommentsResponseItem> =>
-	(await context.github.issues.listComments(context.issue({ issue_number: id }))).data.find(
+const getPreviousComment = async (context: Context, id: number): Promise<Octokit.IssuesListCommentsResponseItem> =>
+	(await context.github.issues.listComments(context.repo({ issue_number: id }))).data.find(
 		comment => comment.user.login === `${process.env.APP_NAME}[bot]`,
 	);
 
@@ -50,13 +50,13 @@ export = async (robot: Application) => {
 					showOldLogs: config.failure.showOldLogs,
 				};
 
-				const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(
+				const comment: Octokit.IssuesListCommentsResponseItem = await getPreviousComment(
 					context,
 					serialized.number,
 				);
 
 				if (comment) {
-					context.log(`Updating comment ${owner}/${repo} #${serialized.number}`);
+					context.log(`[${owner}/${repo}] Updating comment #${serialized.number}`);
 
 					return updateComment({
 						...opts,
@@ -64,7 +64,7 @@ export = async (robot: Application) => {
 					});
 				}
 
-				context.log(`Creating comment ${owner}/${repo} #${serialized.number}`);
+				context.log(`[${owner}/${repo}] Creating comment #${serialized.number}`);
 
 				return newComment(opts);
 			}
@@ -77,23 +77,42 @@ export = async (robot: Application) => {
 			}
 
 			const pullRequests = await context.github.search.issuesAndPullRequests({
-				q: `${sha} is:pr repo:${owner}/${repo}`,
+				q: `${sha} is:pr is:open repo:${owner}/${repo}`,
 			});
 
 			if (!pullRequests.data.total_count) {
 				return;
 			}
 
-			const { number } = pullRequests.data.items.find(pullRequest => pullRequest.state === "open");
+			const pullRequestNumber: number = pullRequests.data.items[0].number;
 
-			const comment: Octokit.IssuesListCommentsResponseItem = await getExistingComment(context, number);
+			const comment: Octokit.IssuesListCommentsResponseItem = await getPreviousComment(
+				context,
+				pullRequestNumber,
+			);
 
-			if (comment && !comment.body.startsWith("<details>")) {
-				const config: Record<string, any> = await loadConfig(context);
+			if (!comment) {
+				return;
+			}
+
+			const config: Record<string, any> = await loadConfig(context);
+
+			if (config.success.deleteComment) {
+				context.log(`[${owner}/${repo}] Deleting comment #${comment.id}`);
+
+				return context.github.issues.deleteComment(
+					context.repo({
+						comment_id: comment.id,
+					}),
+				);
+			}
+
+			if (!comment.body.startsWith("<details>")) {
+				context.log(`[${owner}/${repo}] Creating comment #${comment.id}`);
 
 				return context.github.issues.updateComment(
 					context.repo({
-						issue_number: number,
+						issue_number: pullRequestNumber,
 						body: `<details>\n<summary>${config.success.message.before}</summary>\n\n${comment.body}\n</details>`,
 						comment_id: comment.id,
 					}),

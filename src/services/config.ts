@@ -4,6 +4,7 @@ import getConfig from "probot-config";
 export const loadConfig = async (context: Context): Promise<Record<string, string | boolean>> =>
 	getConfig(context, "botamic.yml", {
 		success: {
+			deleteComment: false,
 			message: {
 				before: "Your tests passed again!",
 				after: false,
