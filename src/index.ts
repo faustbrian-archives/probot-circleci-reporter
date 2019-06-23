@@ -1,6 +1,6 @@
 import handlebars from "handlebars";
 import { Application, Context, Octokit } from "probot";
-import { Serializer } from "./serializer";
+import { CircleCI } from "./providers/circleci";
 import { newComment, updateComment } from "./services/api";
 import { loadConfig } from "./services/config";
 import { templateFailure } from "./templates";
@@ -25,7 +25,7 @@ export = async (robot: Application) => {
 
 			context.log(`Creating instance for ${context.id}`);
 
-			const serialized = await new Serializer(context).serialize();
+			const serialized = await new CircleCI(context).serialize();
 
 			if (serialized) {
 				const config: Record<string, any> = await loadConfig(context);

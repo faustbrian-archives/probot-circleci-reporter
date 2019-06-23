@@ -1,15 +1,15 @@
 {
-	"name": "@botamic/circleci-reporter",
+	"name": "@botamic/ci-reporter",
 	"version": "1.0.0",
-	"description": "A GitHub App built with Probot that reports CircleCI build failures.",
+	"description": "A GitHub App built with Probot that reports Continuous Integration build failures.",
 	"keywords": [
 		"github",
 		"probot",
 		"probot-app"
 	],
-	"homepage": "https://github.com/botamic/circleci-reporter",
-	"bugs": "https://github.com/botamic/circleci-reporter/issues",
-	"repository": "https://github.com/botamic/circleci-reporter.git",
+	"homepage": "https://github.com/botamic/ci-reporter",
+	"bugs": "https://github.com/botamic/ci-reporter/issues",
+	"repository": "https://github.com/botamic/ci-reporter.git",
 	"license": "MPL-2.0",
 	"author": "Brian Faust <hello@basecode.sh>",
 	"scripts": {

@@ -2,7 +2,7 @@ import got from "got";
 import { Context } from "probot";
 import stripAnsi from "strip-ansi";
 
-export class Serializer {
+export class CircleCI {
 	constructor(readonly context: Context) {}
 
 	public parseLog(log) {

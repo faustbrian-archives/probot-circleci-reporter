@@ -5,7 +5,7 @@ export const loadConfig = async (context: Context): Promise<Record<string, strin
 	getConfig(context, "botamic.yml", {
 		success: {
 			message: {
-				before: "Your tests passed on CircleCI!",
+				before: "Your tests passed again!",
 				after: false,
 			},
 		},
