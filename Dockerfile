@@ -1,7 +1,7 @@
 FROM node:alpine
 
 LABEL "com.github.actions.name"="circleci-reporter"
-LABEL "com.github.actions.description"="A GitHub App built with Probot that reports CircleCI build failures.."
+LABEL "com.github.actions.description"="A GitHub App built with Probot that reports CircleCI build failures."
 LABEL "com.github.actions.icon"="code"
 LABEL "com.github.actions.color"="gray-dark"
 

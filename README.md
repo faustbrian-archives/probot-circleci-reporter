@@ -1,6 +1,6 @@
 # circleci-reporter
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that reports CircleCI build failures..
+> A GitHub App built with [Probot](https://github.com/probot/probot) that reports CircleCI build failures.
 
 ## Setup
 

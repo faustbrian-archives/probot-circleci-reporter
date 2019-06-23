@@ -1,7 +1,7 @@
 {
 	"name": "@botamic/circleci-reporter",
 	"version": "1.0.0",
-	"description": "A GitHub App built with Probot that reports CircleCI build failures..",
+	"description": "A GitHub App built with Probot that reports CircleCI build failures.",
 	"keywords": [
 		"github",
 		"probot",
