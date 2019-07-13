@@ -65,8 +65,8 @@
 		"@hapi/joi": "^15.1.0",
 		"got": "^9.6.0",
 		"handlebars": "^4.1.2",
-		"probot": "^9.2.15",
-		"probot-config": "^1.0.1",
+		"probot": "^9.2.19",
+		"probot-config": "^1.1.0",
 		"strip-ansi": "^5.2.0"
 	},
 	"devDependencies": {
@@ -74,14 +74,14 @@
 		"@types/hapi__joi": "^15.0.2",
 		"@types/jest": "^24.0.15",
 		"@types/nock": "^10.0.3",
-		"@types/node": "^12.0.10",
+		"@types/node": "^12.6.2",
 		"@types/prettier": "^1.16.4",
 		"@types/rimraf": "^2.0.2",
 		"@typeskrift/tsconfig": "^0.1.2",
 		"@typeskrift/tslint": "^0.1.4",
 		"codecov": "^3.5.0",
 		"jest": "^24.8.0",
-		"jest-extended": "^0.11.1",
+		"jest-extended": "^0.11.2",
 		"nock": "^10.0.6",
 		"nodemon": "^1.19.1",
 		"prettier": "^1.18.2",
@@ -90,7 +90,7 @@
 		"ts-jest": "^24.0.2",
 		"tslint": "^5.18.0",
 		"tslint-config-prettier": "^1.18.0",
-		"typescript": "^3.5.2"
+		"typescript": "^3.5.3"
 	},
 	"engines": {
 		"node": ">= 8.3.0"
