@@ -7,7 +7,7 @@ export const loadConfig = async (context: Context): Promise<Record<string, any>>
 		context,
 		"botamic.yml",
 		Joi.object({
-			"ci-reporter": Joi.object({
+			"circleci-reporter": Joi.object({
 				success: Joi.object({
 					deleteComment: Joi.bool().default(false),
 					message: Joi.object({
@@ -31,4 +31,4 @@ export const loadConfig = async (context: Context): Promise<Record<string, any>>
 		})
 			.unknown(true)
 			.default(),
-	))["ci-reporter"];
+	))["circleci-reporter"];

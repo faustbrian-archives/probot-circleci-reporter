@@ -1,4 +1,4 @@
-# ci-reporter
+# circleci-reporter
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) that reports Continuous Integration build failures.
 
