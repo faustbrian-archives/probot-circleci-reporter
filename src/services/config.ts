@@ -5,7 +5,6 @@ import { Context } from "probot";
 export const loadConfig = async (context: Context): Promise<Record<string, any>> =>
 	(await getConfig(
 		context,
-		"botamic.yml",
 		Joi.object({
 			"circleci-reporter": Joi.object({
 				success: Joi.object({
@@ -31,4 +30,4 @@ export const loadConfig = async (context: Context): Promise<Record<string, any>>
 		})
 			.unknown(true)
 			.default(),
-	))["circleci-reporter"];
+	));
