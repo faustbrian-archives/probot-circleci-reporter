@@ -562,12 +562,10 @@
     "@types/tough-cookie" "*"
     form-data "^2.5.0"
 
-"@types/hapi__joi@*", "@types/hapi__joi@^15.0.2":
-  version "15.0.2"
-  resolved "https://registry.yarnpkg.com/@types/hapi__joi/-/hapi__joi-15.0.2.tgz#94f37e9afab4db6a03f3d9e80dc939eb1f7b9a4f"
-  integrity sha512-EsOuX8cbAdSgp/9mo5NoI4vMnZ68c8Jk1fl3tyA07zd9aOq4q4udsJ2/YjhaFw0u2Zp6hBonUBrKEWotZg7PDQ==
-  dependencies:
-    "@types/hapi__joi" "*"
+"@types/hapi__joi@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@types/hapi__joi/-/hapi__joi-16.0.0.tgz#ba71b9514a3152909eb48e33e67be4cae550ea0d"
+  integrity sha512-WNQRIP65MmVIrLYk4JzRhwUm0jwN0cbeo7kzyQf8QuGAsQ6bgnRfRUipOY+b9RRtfA8xI9ZyM5E46rNSgUaB8g==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
