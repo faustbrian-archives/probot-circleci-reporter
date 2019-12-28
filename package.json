@@ -67,7 +67,7 @@
 		"handlebars": "^4.1.2",
 		"probot": "^9.2.19",
 		"probot-config": "^1.1.0",
-		"strip-ansi": "^5.2.0"
+		"strip-ansi": "^6.0.0"
 	},
 	"devDependencies": {
 		"@types/got": "^9.6.2",
